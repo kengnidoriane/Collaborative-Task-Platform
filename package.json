@@ -34,8 +34,7 @@
     "@nx/react": "^17.2.8",
     "@nx/workspace": "^17.2.8",
     "@biomejs/biome": "^1.4.1",
-    "@commitlint/cli": "^18.4.4",
-    "@commitlint/config-conventional": "^18.4.4",
+
     "husky": "^8.0.3",
     "lint-staged": "^15.2.0",
     "nx": "^17.2.8",
