@@ -107,7 +107,14 @@
       "**/.next/**",
       "**/build/**",
       "**/.nx/**",
-      "**/coverage/**"
+      "**/coverage/**",
+      "**/pnpm-lock.yaml",
+      "**/.husky/**"
     ]
+  },
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
   }
 }

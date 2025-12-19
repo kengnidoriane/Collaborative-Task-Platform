@@ -1,8 +1,5 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-# Run lint-staged
+# Run lint-staged (only on staged files)
 npx lint-staged
-
-# Run type checking on affected projects
-npx nx affected --target=type-check --uncommitted

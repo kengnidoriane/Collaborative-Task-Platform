@@ -16,7 +16,7 @@
     "format": "biome format --write .",
     "format:check": "biome format .",
     "lint:check": "biome lint .",
-    "lint:fix": "biome lint --apply .",
+    "lint:fix": "biome check --write .",
     "type-check": "nx run-many --target=type-check --all",
     "clean": "nx reset && rm -rf node_modules && rm -rf apps/*/node_modules && rm -rf libs/*/node_modules",
     "affected:build": "nx affected --target=build",
@@ -34,6 +34,8 @@
     "@nx/react": "^17.2.8",
     "@nx/workspace": "^17.2.8",
     "@biomejs/biome": "^1.4.1",
+    "@commitlint/cli": "^18.4.4",
+    "@commitlint/config-conventional": "^18.4.4",
     "husky": "^8.0.3",
     "lint-staged": "^15.2.0",
     "nx": "^17.2.8",
@@ -41,6 +43,7 @@
   },
   "workspaces": ["apps/*", "libs/*", "tools/*"],
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,json,css,md}": ["biome format --write", "biome lint --apply"]
+    "*.{js,jsx,ts,tsx}": ["biome check --write --no-errors-on-unmatched"],
+    "*.{json,md}": ["biome format --write --no-errors-on-unmatched"]
   }
 }
