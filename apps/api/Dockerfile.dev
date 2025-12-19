@@ -1,0 +1,25 @@
+FROM openjdk:21-jdk-slim
+
+WORKDIR /app
+
+# Install development tools
+RUN apt-get update && apt-get install -y \
+    curl \
+    wget \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy Gradle files
+COPY build.gradle settings.gradle gradlew ./
+COPY gradle ./gradle
+
+# Download dependencies
+RUN ./gradlew dependencies --no-daemon
+
+# Copy source code
+COPY src ./src
+
+# Expose ports
+EXPOSE 8080 8081
+
+# Development command with hot reload
+CMD ["./gradlew", "bootRun", "--no-daemon", "--continuous"]

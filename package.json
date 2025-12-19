@@ -1,0 +1,46 @@
+{
+  "name": "collaborative-task-platform",
+  "version": "1.0.0",
+  "description": "Real-time collaborative task management platform",
+  "private": true,
+  "packageManager": "pnpm@8.15.0",
+  "engines": {
+    "node": ">=18.17.0",
+    "pnpm": ">=8.0.0"
+  },
+  "scripts": {
+    "build": "nx run-many --target=build --all",
+    "dev": "nx run-many --target=dev --all --parallel",
+    "test": "nx run-many --target=test --all",
+    "lint": "nx run-many --target=lint --all",
+    "format": "biome format --write .",
+    "format:check": "biome format .",
+    "lint:check": "biome lint .",
+    "lint:fix": "biome lint --apply .",
+    "type-check": "nx run-many --target=type-check --all",
+    "clean": "nx reset && rm -rf node_modules && rm -rf apps/*/node_modules && rm -rf libs/*/node_modules",
+    "affected:build": "nx affected --target=build",
+    "affected:test": "nx affected --target=test",
+    "affected:lint": "nx affected --target=lint",
+    "graph": "nx graph",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "@nx/devkit": "^17.2.8",
+    "@nx/eslint": "^17.2.8",
+    "@nx/js": "^17.2.8",
+    "@nx/next": "^17.2.8",
+    "@nx/node": "^17.2.8",
+    "@nx/react": "^17.2.8",
+    "@nx/workspace": "^17.2.8",
+    "@biomejs/biome": "^1.4.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
+    "nx": "^17.2.8",
+    "typescript": "^5.3.3"
+  },
+  "workspaces": ["apps/*", "libs/*", "tools/*"],
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,json,css,md}": ["biome format --write", "biome lint --apply"]
+  }
+}

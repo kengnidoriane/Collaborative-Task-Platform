@@ -1,0 +1,13 @@
+packages:
+  - 'apps/*'
+  - 'libs/*'
+  - 'tools/*'
+
+# Shared dependencies hoisting
+shared-workspace-lockfile: true
+link-workspace-packages: true
+prefer-workspace-packages: true
+
+# Performance optimizations
+store-dir: ~/.pnpm-store
+verify-store-integrity: false
