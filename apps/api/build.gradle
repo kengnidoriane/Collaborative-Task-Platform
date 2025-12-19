@@ -49,10 +49,23 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
     implementation 'com.corundumstudio.socketio:netty-socketio:2.0.6'
     
-    // Observability
+    // Problem Details (RFC 7807)
+    implementation 'org.springframework:spring-webmvc:6.1.2'
+    
+    // Redis JSON, Search, and Streams
+    implementation 'redis.clients:jedis:5.1.0'
+    implementation 'com.redislabs:jredisearch:4.1.1'
+    implementation 'com.redislabs:jrejson:1.5.0'
+    
+    // OpenTelemetry and Observability
     implementation 'io.micrometer:micrometer-tracing-bridge-otel'
     implementation 'io.opentelemetry:opentelemetry-exporter-zipkin'
+    implementation 'io.opentelemetry:opentelemetry-exporter-otlp'
     implementation 'io.micrometer:micrometer-registry-prometheus'
+    implementation 'net.logstash.logback:logstash-logback-encoder:7.4'
+    
+    // Virtual Threads support
+    implementation 'org.springframework:spring-core:6.1.2'
     
     // Development tools
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -66,6 +79,7 @@ dependencies {
     testImplementation 'org.testcontainers:postgresql'
     testImplementation 'org.testcontainers:mongodb'
     testImplementation 'org.testcontainers:r2dbc'
+    testImplementation 'org.testcontainers:redis'
 }
 
 tasks.named('test') {

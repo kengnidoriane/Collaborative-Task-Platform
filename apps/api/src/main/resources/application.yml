@@ -19,6 +19,7 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017/collaborative_tasks_analytics
+      database: collaborative_tasks_analytics
     redis:
       host: localhost
       port: 6379
