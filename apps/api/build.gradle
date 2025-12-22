@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'org.springframework.boot' version '3.2.1'
-    id 'io.spring.dependency-management' version '1.1.4'
+    id 'io.spring.dependency-management' version '1.1.6'
     id 'org.graalvm.buildtools.native' version '0.9.28'
 }
 
@@ -54,13 +54,14 @@ dependencies {
     
     // Redis JSON, Search, and Streams
     implementation 'redis.clients:jedis:5.1.0'
-    implementation 'com.redislabs:jredisearch:4.1.1'
-    implementation 'com.redislabs:jrejson:1.5.0'
+    // implementation 'com.redislabs:jredisearch:4.1.1'
+    // implementation 'com.redislabs:jrejson:1.5.0'
     
     // OpenTelemetry and Observability
     implementation 'io.micrometer:micrometer-tracing-bridge-otel'
     implementation 'io.opentelemetry:opentelemetry-exporter-zipkin'
     implementation 'io.opentelemetry:opentelemetry-exporter-otlp'
+    implementation 'io.opentelemetry.semconv:opentelemetry-semconv:1.21.0-alpha'
     implementation 'io.micrometer:micrometer-registry-prometheus'
     implementation 'net.logstash.logback:logstash-logback-encoder:7.4'
     
@@ -78,8 +79,12 @@ dependencies {
     testImplementation 'org.testcontainers:junit-jupiter'
     testImplementation 'org.testcontainers:postgresql'
     testImplementation 'org.testcontainers:mongodb'
-    testImplementation 'org.testcontainers:r2dbc'
-    testImplementation 'org.testcontainers:redis'
+    // testImplementation 'org.testcontainers:r2dbc'
+    // testImplementation 'org.testcontainers:redis'
+    
+    // Property-based testing with jqwik
+    testImplementation 'net.jqwik:jqwik:1.8.2'
+    // testImplementation 'net.jqwik:jqwik-spring:1.8.2'
 }
 
 tasks.named('test') {
@@ -104,15 +109,15 @@ graalvmNative {
     }
 }
 
-// Enable preview features for Java 21
-tasks.withType(JavaCompile) {
-    options.compilerArgs += ['--enable-preview']
-}
+// Enable preview features for Java 21 - Commented out for compatibility
+// tasks.withType(JavaCompile) {
+//     options.compilerArgs += ['--enable-preview']
+// }
 
-tasks.withType(Test) {
-    jvmArgs += ['--enable-preview']
-}
+// tasks.withType(Test) {
+//     jvmArgs += ['--enable-preview']
+// }
 
-tasks.withType(JavaExec) {
-    jvmArgs += ['--enable-preview']
-}
+// tasks.withType(JavaExec) {
+//     jvmArgs += ['--enable-preview']
+// }

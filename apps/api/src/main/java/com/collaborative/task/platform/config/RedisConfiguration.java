@@ -3,6 +3,7 @@ package com.collaborative.task.platform.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -48,17 +49,18 @@ public class RedisConfiguration {
      */
     @Bean
     public ReactiveRedisTemplate<String, Object> reactiveRedisTemplate(
-            RedisConnectionFactory connectionFactory) {
+            ReactiveRedisConnectionFactory connectionFactory) {
         
-        ReactiveRedisTemplate<String, Object> template = new ReactiveRedisTemplate<>(
-            connectionFactory,
+        org.springframework.data.redis.serializer.RedisSerializationContext<String, Object> serializationContext =
             org.springframework.data.redis.serializer.RedisSerializationContext
                 .<String, Object>newSerializationContext(new StringRedisSerializer())
                 .value(new GenericJackson2JsonRedisSerializer())
-                .build()
-        );
+                .build();
         
-        return template;
+        return new ReactiveRedisTemplate<String, Object>(
+            connectionFactory,
+            serializationContext
+        );
     }
 
     /**
