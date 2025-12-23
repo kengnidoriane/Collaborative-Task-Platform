@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
 import { Button } from '@collaborative-task-platform/ui-components';
+import { Loader2, LogOut } from 'lucide-react';
+import { useState } from 'react';
 import { useAuth } from '../../lib/auth/auth-context';
-import { LogOut, Loader2 } from 'lucide-react';
 
 interface LogoutButtonProps {
   variant?: 'default' | 'outline' | 'ghost';
@@ -31,12 +31,12 @@ export function LogoutButton({
     try {
       setIsLoggingOut(true);
       onLogoutStart?.();
-      
+
       // Clear any pending requests or cleanup
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
       logout();
-      
+
       onLogoutComplete?.();
     } catch (error) {
       console.error('Logout error:', error);
@@ -64,11 +64,7 @@ export function LogoutButton({
       ) : (
         <>
           {showIcon && <LogOut className="h-4 w-4" />}
-          {showText && (
-            <span className={showIcon ? 'ml-2' : ''}>
-              Sign Out
-            </span>
-          )}
+          {showText && <span className={showIcon ? 'ml-2' : ''}>Sign Out</span>}
         </>
       )}
     </Button>

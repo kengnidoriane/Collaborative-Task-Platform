@@ -1,16 +1,22 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '../../lib/auth/auth-context';
-import { UserProfile } from '../../components/auth/user-profile';
-import { LogoutButton } from '../../components/auth/logout-button';
-import { UserAvatar } from '../../components/auth/user-profile';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@collaborative-task-platform/ui-components';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@collaborative-task-platform/ui-components';
 import { Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { LogoutButton } from '../../components/auth/logout-button';
+import { UserProfile } from '../../components/auth/user-profile';
+import { UserAvatar } from '../../components/auth/user-profile';
+import { useAuth } from '../../lib/auth/auth-context';
 
 export default function DashboardPage() {
-  const { isAuthenticated, isLoading, user } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -50,15 +56,11 @@ function DashboardContent() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-4">
-              <h1 className="text-xl font-semibold text-gray-900">
-                Collaborative Task Platform
-              </h1>
+              <h1 className="text-xl font-semibold text-gray-900">Collaborative Task Platform</h1>
             </div>
             <div className="flex items-center space-x-4">
               <UserAvatar user={user} size="sm" />
-              <span className="text-sm text-gray-700">
-                Welcome, {user?.fullName}
-              </span>
+              <span className="text-sm text-gray-700">Welcome, {user?.fullName}</span>
               <LogoutButton size="sm" />
             </div>
           </div>
@@ -87,7 +89,7 @@ function DashboardContent() {
                       Your session is active and secure. You can now access all platform features.
                     </p>
                   </div>
-                  
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="p-4 border rounded-md">
                       <h4 className="font-medium text-gray-900">Projects</h4>

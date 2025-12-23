@@ -1,7 +1,7 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor, act } from '@testing-library/react';
-import { AuthProvider, useAuth } from '../auth-context';
 import type { AuthResponse, User } from '@collaborative-task-platform/shared-types';
+import { act, render, screen, waitFor } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { AuthProvider, useAuth } from '../auth-context';
 
 // Mock the API client
 const mockApiClient = {
@@ -57,7 +57,9 @@ function TestComponent() {
       <div data-testid="isLoading">{auth.isLoading.toString()}</div>
       <div data-testid="user">{auth.user?.fullName || 'null'}</div>
       <button onClick={() => auth.login('test@example.com', 'password')}>Login</button>
-      <button onClick={() => auth.register('test@example.com', 'password', 'Test User')}>Register</button>
+      <button onClick={() => auth.register('test@example.com', 'password', 'Test User')}>
+        Register
+      </button>
       <button onClick={() => auth.logout()}>Logout</button>
     </div>
   );
@@ -167,7 +169,11 @@ describe('AuthContext', () => {
     });
 
     await waitFor(() => {
-      expect(mockApiClient.register).toHaveBeenCalledWith('test@example.com', 'password', 'Test User');
+      expect(mockApiClient.register).toHaveBeenCalledWith(
+        'test@example.com',
+        'password',
+        'Test User'
+      );
       expect(localStorageMock.setItem).toHaveBeenCalledWith('accessToken', 'access-token');
       expect(localStorageMock.setItem).toHaveBeenCalledWith('refreshToken', 'refresh-token');
       expect(mockPush).toHaveBeenCalledWith('/dashboard');

@@ -1,12 +1,18 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { LogoutButton } from '../logout-button';
 
 // Mock the auth context
 const mockLogout = vi.fn();
 const mockAuthContext = {
-  user: { id: '1', email: 'test@example.com', fullName: 'Test User', createdAt: new Date(), updatedAt: new Date() },
+  user: {
+    id: '1',
+    email: 'test@example.com',
+    fullName: 'Test User',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
   isAuthenticated: true,
   isLoading: false,
   accessToken: 'token',
@@ -77,12 +83,7 @@ describe('LogoutButton', () => {
     const onLogoutStart = vi.fn();
     const onLogoutComplete = vi.fn();
 
-    render(
-      <LogoutButton 
-        onLogoutStart={onLogoutStart} 
-        onLogoutComplete={onLogoutComplete} 
-      />
-    );
+    render(<LogoutButton onLogoutStart={onLogoutStart} onLogoutComplete={onLogoutComplete} />);
 
     const button = screen.getByRole('button', { name: /sign out of your account/i });
     await user.click(button);

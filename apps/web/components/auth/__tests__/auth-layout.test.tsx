@@ -1,6 +1,6 @@
-import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { describe, expect, it, vi } from 'vitest';
 import { AuthLayout } from '../auth-layout';
 
 // Mock the form components
@@ -67,8 +67,14 @@ describe('AuthLayout', () => {
     render(<AuthLayout />);
 
     expect(screen.getByText(/by signing in, you agree to our/i)).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /terms of service/i })).toHaveAttribute('href', '/terms');
-    expect(screen.getByRole('link', { name: /privacy policy/i })).toHaveAttribute('href', '/privacy');
+    expect(screen.getByRole('link', { name: /terms of service/i })).toHaveAttribute(
+      'href',
+      '/terms'
+    );
+    expect(screen.getByRole('link', { name: /privacy policy/i })).toHaveAttribute(
+      'href',
+      '/privacy'
+    );
   });
 
   it('applies custom className', () => {

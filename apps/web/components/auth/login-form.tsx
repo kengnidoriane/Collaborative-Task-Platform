@@ -1,21 +1,24 @@
 'use client';
 
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import { Button } from '@collaborative-task-platform/ui-components';
 import { Input } from '@collaborative-task-platform/ui-components';
 import { Label } from '@collaborative-task-platform/ui-components';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@collaborative-task-platform/ui-components';
-import { useAuth } from '../../lib/auth/auth-context';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@collaborative-task-platform/ui-components';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { useAuth } from '../../lib/auth/auth-context';
 
 const loginSchema = z.object({
-  email: z
-    .string()
-    .min(1, 'Email is required')
-    .email('Please enter a valid email address'),
+  email: z.string().min(1, 'Email is required').email('Please enter a valid email address'),
   password: z
     .string()
     .min(1, 'Password is required')
@@ -118,17 +121,16 @@ export function LoginForm({ onSwitchToRegister }: LoginFormProps) {
 
           {/* Submit Error */}
           {submitError && (
-            <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md" role="alert">
+            <div
+              className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md"
+              role="alert"
+            >
               {submitError}
             </div>
           )}
 
           {/* Submit Button */}
-          <Button
-            type="submit"
-            className="w-full"
-            disabled={isFormLoading}
-          >
+          <Button type="submit" className="w-full" disabled={isFormLoading}>
             {isFormLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

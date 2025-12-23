@@ -1,10 +1,10 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '../lib/auth/auth-context';
 import { Button } from '@collaborative-task-platform/ui-components';
 import { Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { useAuth } from '../lib/auth/auth-context';
 
 export default function Home() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -40,7 +40,8 @@ export default function Home() {
             Collaborative Task Platform
           </h1>
           <p className="text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto">
-            Real-time collaborative task management that eliminates coordination overhead and keeps your team in sync.
+            Real-time collaborative task management that eliminates coordination overhead and keeps
+            your team in sync.
           </p>
         </div>
 
@@ -69,11 +70,7 @@ export default function Home() {
         {/* Call to Action */}
         <div className="space-y-4">
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              size="lg"
-              onClick={() => router.push('/register')}
-              className="px-8 py-3"
-            >
+            <Button size="lg" onClick={() => router.push('/register')} className="px-8 py-3">
               Get Started
             </Button>
             <Button
@@ -85,9 +82,7 @@ export default function Home() {
               Sign In
             </Button>
           </div>
-          <p className="text-sm text-gray-500">
-            Free to start • No credit card required
-          </p>
+          <p className="text-sm text-gray-500">Free to start • No credit card required</p>
         </div>
       </div>
     </main>

@@ -1,8 +1,8 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import type { User } from '@collaborative-task-platform/shared-types';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { UserProfile, UserAvatar } from '../user-profile';
-import type { User } from '@collaborative-task-platform/shared-types';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { UserAvatar, UserProfile } from '../user-profile';
 
 // Mock the auth context
 const mockUser: User = {

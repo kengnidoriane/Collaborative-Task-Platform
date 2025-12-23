@@ -1,8 +1,8 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { LoginForm } from '../login-form';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { AuthProvider } from '../../../lib/auth/auth-context';
+import { LoginForm } from '../login-form';
 
 // Mock the auth context
 const mockLogin = vi.fn();

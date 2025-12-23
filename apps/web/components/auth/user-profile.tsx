@@ -1,16 +1,22 @@
 'use client';
 
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import type { User } from '@collaborative-task-platform/shared-types';
 import { Button } from '@collaborative-task-platform/ui-components';
 import { Input } from '@collaborative-task-platform/ui-components';
 import { Label } from '@collaborative-task-platform/ui-components';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@collaborative-task-platform/ui-components';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@collaborative-task-platform/ui-components';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Check, Loader2, Settings, User as UserIcon } from 'lucide-react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 import { useAuth } from '../../lib/auth/auth-context';
-import type { User } from '@collaborative-task-platform/shared-types';
-import { User as UserIcon, Settings, Loader2, Check } from 'lucide-react';
 
 const profileSchema = z.object({
   fullName: z
@@ -32,8 +38,10 @@ interface UserProfileProps {
   className?: string;
 }
 
+import React from 'react';
+
 export function UserProfile({ className }: UserProfileProps) {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const [updateError, setUpdateError] = useState<string | null>(null);
@@ -52,20 +60,20 @@ export function UserProfile({ className }: UserProfileProps) {
     mode: 'onBlur',
   });
 
-  const onSubmit = async (data: ProfileFormData) => {
+  const onSubmit = async (_data: ProfileFormData) => {
     try {
       setUpdateError(null);
       setUpdateSuccess(false);
 
       // TODO: Implement profile update API call
       // const response = await updateProfile(data);
-      
+
       // Simulate API call for now
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       setUpdateSuccess(true);
       setIsEditing(false);
-      
+
       // Hide success message after 3 seconds
       setTimeout(() => setUpdateSuccess(false), 3000);
     } catch (error) {
@@ -159,7 +167,10 @@ export function UserProfile({ className }: UserProfileProps) {
 
           {/* Update Error */}
           {updateError && (
-            <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md" role="alert">
+            <div
+              className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md"
+              role="alert"
+            >
               {updateError}
             </div>
           )}
@@ -167,11 +178,7 @@ export function UserProfile({ className }: UserProfileProps) {
           {/* Action Buttons */}
           {isEditing && (
             <div className="flex space-x-2 pt-4">
-              <Button
-                type="submit"
-                disabled={isSubmitting || !isDirty}
-                className="flex-1"
-              >
+              <Button type="submit" disabled={isSubmitting || !isDirty} className="flex-1">
                 {isSubmitting ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -215,7 +222,7 @@ export function UserAvatar({ user, size = 'md', className }: UserAvatarProps) {
   const getInitials = (name: string) => {
     return name
       .split(' ')
-      .map(part => part.charAt(0))
+      .map((part) => part.charAt(0))
       .join('')
       .toUpperCase()
       .slice(0, 2);
@@ -223,7 +230,9 @@ export function UserAvatar({ user, size = 'md', className }: UserAvatarProps) {
 
   if (!user) {
     return (
-      <div className={`${sizeClasses[size]} ${className} rounded-full bg-gray-200 flex items-center justify-center`}>
+      <div
+        className={`${sizeClasses[size]} ${className} rounded-full bg-gray-200 flex items-center justify-center`}
+      >
         <UserIcon className="h-1/2 w-1/2 text-gray-400" />
       </div>
     );
@@ -240,7 +249,7 @@ export function UserAvatar({ user, size = 'md', className }: UserAvatarProps) {
   }
 
   return (
-    <div 
+    <div
       className={`${sizeClasses[size]} ${className} rounded-full bg-blue-600 text-white flex items-center justify-center font-medium`}
       title={user.fullName}
     >

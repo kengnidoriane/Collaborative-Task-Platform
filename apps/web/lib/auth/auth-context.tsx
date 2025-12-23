@@ -1,8 +1,9 @@
 'use client';
 
-import type { User, AuthResponse } from '@collaborative-task-platform/shared-types';
-import { createContext, useContext, useEffect, useState } from 'react';
+import React from 'react';
+import type { AuthResponse, User } from '@collaborative-task-platform/shared-types';
 import { useRouter } from 'next/navigation';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { apiClient } from '../api/client';
 
 interface AuthState {
@@ -21,7 +22,7 @@ interface AuthContextType extends AuthState {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const API_BASE_URL = process.env['NEXT_PUBLIC_API_URL'] || 'http://localhost:8080';
+const _API_BASE_URL = process.env['NEXT_PUBLIC_API_URL'] || 'http://localhost:8080';
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<AuthState>({
@@ -38,7 +39,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       try {
         const token = localStorage.getItem('accessToken');
         const refreshTokenValue = localStorage.getItem('refreshToken');
-        
+
         if (token && refreshTokenValue) {
           // Validate token and get user info
           try {
@@ -49,16 +50,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
               isLoading: false,
               accessToken: token,
             });
-          } catch (error) {
+          } catch (_error) {
             // Token is invalid, try to refresh
             await refreshTokenInternal();
           }
         } else {
-          setState(prev => ({ ...prev, isLoading: false }));
+          setState((prev) => ({ ...prev, isLoading: false }));
         }
       } catch (error) {
         console.error('Auth initialization error:', error);
-        setState(prev => ({ ...prev, isLoading: false }));
+        setState((prev) => ({ ...prev, isLoading: false }));
       }
     };
 
@@ -75,7 +76,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const authResponse = await apiClient.refreshToken(refreshTokenValue);
       localStorage.setItem('accessToken', authResponse.accessToken);
       localStorage.setItem('refreshToken', authResponse.refreshToken);
-      
+
       setState({
         user: authResponse.user,
         isAuthenticated: true,
@@ -90,14 +91,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = async (email: string, password: string) => {
     try {
-      setState(prev => ({ ...prev, isLoading: true }));
-      
+      setState((prev) => ({ ...prev, isLoading: true }));
+
       const authResponse = await apiClient.login(email, password);
-      
+
       // Store tokens
       localStorage.setItem('accessToken', authResponse.accessToken);
       localStorage.setItem('refreshToken', authResponse.refreshToken);
-      
+
       setState({
         user: authResponse.user,
         isAuthenticated: true,
@@ -107,21 +108,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       router.push('/dashboard');
     } catch (error) {
-      setState(prev => ({ ...prev, isLoading: false }));
+      setState((prev) => ({ ...prev, isLoading: false }));
       throw error;
     }
   };
 
   const register = async (email: string, password: string, fullName: string) => {
     try {
-      setState(prev => ({ ...prev, isLoading: true }));
-      
+      setState((prev) => ({ ...prev, isLoading: true }));
+
       const authResponse = await apiClient.register(email, password, fullName);
-      
+
       // Store tokens
       localStorage.setItem('accessToken', authResponse.accessToken);
       localStorage.setItem('refreshToken', authResponse.refreshToken);
-      
+
       setState({
         user: authResponse.user,
         isAuthenticated: true,
@@ -131,7 +132,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       router.push('/dashboard');
     } catch (error) {
-      setState(prev => ({ ...prev, isLoading: false }));
+      setState((prev) => ({ ...prev, isLoading: false }));
       throw error;
     }
   };
@@ -140,7 +141,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Clear tokens
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
-    
+
     setState({
       user: null,
       isAuthenticated: false,

@@ -1,6 +1,6 @@
 /// <reference types="vitest/globals" />
 import '@testing-library/jest-dom';
-import { vi, beforeEach } from 'vitest';
+import { beforeEach, vi } from 'vitest';
 
 // Mock Axios
 vi.mock('axios', () => ({

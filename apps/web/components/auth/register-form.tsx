@@ -1,41 +1,49 @@
 'use client';
 
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import { Button } from '@collaborative-task-platform/ui-components';
 import { Input } from '@collaborative-task-platform/ui-components';
 import { Label } from '@collaborative-task-platform/ui-components';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@collaborative-task-platform/ui-components';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@collaborative-task-platform/ui-components';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Check, Eye, EyeOff, Loader2, X } from 'lucide-react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 import { useAuth } from '../../lib/auth/auth-context';
-import { Eye, EyeOff, Loader2, Check, X } from 'lucide-react';
 
-const registerSchema = z.object({
-  fullName: z
-    .string()
-    .min(1, 'Full name is required')
-    .min(2, 'Full name must be at least 2 characters')
-    .max(100, 'Full name must be less than 100 characters')
-    .regex(/^[a-zA-Z\s]+$/, 'Full name can only contain letters and spaces'),
-  email: z
-    .string()
-    .min(1, 'Email is required')
-    .email('Please enter a valid email address')
-    .max(255, 'Email must be less than 255 characters'),
-  password: z
-    .string()
-    .min(8, 'Password must be at least 8 characters')
-    .max(128, 'Password must be less than 128 characters')
-    .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
-    .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
-    .regex(/[0-9]/, 'Password must contain at least one number')
-    .regex(/[^A-Za-z0-9]/, 'Password must contain at least one special character'),
-  confirmPassword: z.string().min(1, 'Please confirm your password'),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ['confirmPassword'],
-});
+const registerSchema = z
+  .object({
+    fullName: z
+      .string()
+      .min(1, 'Full name is required')
+      .min(2, 'Full name must be at least 2 characters')
+      .max(100, 'Full name must be less than 100 characters')
+      .regex(/^[a-zA-Z\s]+$/, 'Full name can only contain letters and spaces'),
+    email: z
+      .string()
+      .min(1, 'Email is required')
+      .email('Please enter a valid email address')
+      .max(255, 'Email must be less than 255 characters'),
+    password: z
+      .string()
+      .min(8, 'Password must be at least 8 characters')
+      .max(128, 'Password must be less than 128 characters')
+      .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
+      .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
+      .regex(/[0-9]/, 'Password must contain at least one number')
+      .regex(/[^A-Za-z0-9]/, 'Password must contain at least one special character'),
+    confirmPassword: z.string().min(1, 'Please confirm your password'),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ['confirmPassword'],
+  });
 
 type RegisterFormData = z.infer<typeof registerSchema>;
 
@@ -156,7 +164,7 @@ export function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
                 )}
               </button>
             </div>
-            
+
             {/* Password Requirements */}
             {password && (
               <div className="space-y-1">
@@ -177,7 +185,7 @@ export function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
                 })}
               </div>
             )}
-            
+
             {errors.password && (
               <p className="text-sm text-red-600" role="alert">
                 {errors.password.message}
@@ -196,7 +204,9 @@ export function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
                 autoComplete="new-password"
                 disabled={isFormLoading}
                 {...register('confirmPassword')}
-                className={errors.confirmPassword ? 'border-red-500 focus:border-red-500 pr-10' : 'pr-10'}
+                className={
+                  errors.confirmPassword ? 'border-red-500 focus:border-red-500 pr-10' : 'pr-10'
+                }
               />
               <button
                 type="button"
@@ -221,17 +231,16 @@ export function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
 
           {/* Submit Error */}
           {submitError && (
-            <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md" role="alert">
+            <div
+              className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md"
+              role="alert"
+            >
               {submitError}
             </div>
           )}
 
           {/* Submit Button */}
-          <Button
-            type="submit"
-            className="w-full"
-            disabled={isFormLoading}
-          >
+          <Button type="submit" className="w-full" disabled={isFormLoading}>
             {isFormLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

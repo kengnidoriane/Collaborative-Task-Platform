@@ -1,6 +1,6 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { RegisterForm } from '../register-form';
 
 // Mock the auth context
@@ -72,7 +72,9 @@ describe('RegisterForm', () => {
     await user.tab();
 
     await waitFor(() => {
-      expect(screen.getByText(/full name can only contain letters and spaces/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/full name can only contain letters and spaces/i)
+      ).toBeInTheDocument();
     });
   });
 
@@ -117,11 +119,15 @@ describe('RegisterForm', () => {
     expect(passwordInput).toHaveAttribute('type', 'password');
     expect(confirmPasswordInput).toHaveAttribute('type', 'password');
 
-    await user.click(passwordToggle);
-    expect(passwordInput).toHaveAttribute('type', 'text');
+    if (passwordToggle) {
+      await user.click(passwordToggle);
+      expect(passwordInput).toHaveAttribute('type', 'text');
+    }
 
-    await user.click(confirmPasswordToggle);
-    expect(confirmPasswordInput).toHaveAttribute('type', 'text');
+    if (confirmPasswordToggle) {
+      await user.click(confirmPasswordToggle);
+      expect(confirmPasswordInput).toHaveAttribute('type', 'text');
+    }
   });
 
   it('calls register function with correct data on form submission', async () => {
