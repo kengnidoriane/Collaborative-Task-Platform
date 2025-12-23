@@ -1,18 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
+  turbopack: {
+    rules: {
+      '*.svg': {
+        loaders: ['@svgr/webpack'],
+        as: '*.js',
       },
     },
-    serverComponentsExternalPackages: ['@collaborative-task-platform/shared-types'],
   },
+  serverExternalPackages: ['@collaborative-task-platform/shared-types'],
   transpilePackages: [
-    '@collaborative-task-platform/shared-types',
     '@collaborative-task-platform/ui-components',
     '@collaborative-task-platform/utils',
     '@collaborative-task-platform/constants',
