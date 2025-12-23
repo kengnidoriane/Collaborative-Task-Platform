@@ -45,6 +45,18 @@ dependencies {
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.3'
     implementation 'org.springframework.security:spring-security-crypto'
     
+    // WebAuthn and Passkeys
+    implementation 'com.yubico:webauthn-server-core:2.5.0'
+    implementation 'com.yubico:webauthn-server-attestation:2.5.0'
+    
+    // Argon2 Password Hashing
+    implementation 'org.springframework.security:spring-security-crypto'
+    implementation 'de.mkammerer:argon2-jvm:2.11'
+    
+    // OAuth2 and OIDC
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+    
     // WebSocket and Real-time
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
     implementation 'com.corundumstudio.socketio:netty-socketio:2.0.6'
@@ -79,6 +91,7 @@ dependencies {
     testImplementation 'org.testcontainers:junit-jupiter'
     testImplementation 'org.testcontainers:postgresql'
     testImplementation 'org.testcontainers:mongodb'
+    testRuntimeOnly 'com.h2database:h2'
     // testImplementation 'org.testcontainers:r2dbc'
     // testImplementation 'org.testcontainers:redis'
     
