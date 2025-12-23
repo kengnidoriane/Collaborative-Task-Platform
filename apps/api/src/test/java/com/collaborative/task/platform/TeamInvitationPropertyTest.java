@@ -183,7 +183,7 @@ public class TeamInvitationPropertyTest {
         assertThat(invitation.getInvitationAcceptedAt()).isNotNull();
         assertThat(invitation.getInvitationAcceptedAt()).isAfter(beforeAcceptance.minusSeconds(1));
         assertThat(invitation.getInvitationAcceptedAt()).isBefore(afterAcceptance.plusSeconds(1));
-        assertThat(invitation.getInvitationAcceptedAt()).isAfter(invitation.getJoinedAt());
+        assertThat(invitation.getInvitationAcceptedAt()).isAfterOrEqualTo(invitation.getJoinedAt());
     }
     
     /**

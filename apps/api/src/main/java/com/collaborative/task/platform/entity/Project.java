@@ -146,8 +146,13 @@ public class Project {
     
     /**
      * Remove a member from the project.
+     * Note: Owner cannot be removed through member management.
      */
     public void removeMember(User user) {
+        // Prevent removing the owner through member management
+        if (isOwner(user)) {
+            return;
+        }
         members.removeIf(member -> member.getUser().equals(user));
     }
     

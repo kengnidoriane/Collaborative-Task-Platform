@@ -55,6 +55,7 @@ public class ProjectMember {
         this.project = project;
         this.user = user;
         this.role = role;
+        this.joinedAt = LocalDateTime.now();
         this.invitationAcceptedAt = LocalDateTime.now();
     }
     
@@ -64,6 +65,7 @@ public class ProjectMember {
         this.user = user;
         this.role = role;
         this.invitedBy = invitedBy;
+        this.joinedAt = LocalDateTime.now();
         // invitationAcceptedAt will be null until invitation is accepted
     }
     

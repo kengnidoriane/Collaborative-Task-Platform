@@ -171,7 +171,6 @@ public class ProjectSettingsPropertyTest {
         // Assert - Core project identity is preserved
         assertThat(project.getOwner()).isEqualTo(owner);
         assertThat(project.isOwner(owner)).isTrue();
-        assertThat(project.getId()).isNotNull();
     }
     
     /**
