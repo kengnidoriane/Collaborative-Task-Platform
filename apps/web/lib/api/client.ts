@@ -1,5 +1,5 @@
-import axios, { type AxiosInstance, type AxiosRequestConfig, type AxiosResponse } from 'axios';
-import type { User, AuthResponse } from '@collaborative-task-platform/shared-types';
+import type { AuthResponse, User } from '@collaborative-task-platform/shared-types';
+import axios, { type AxiosInstance, type AxiosRequestConfig, type InternalAxiosRequestConfig, type AxiosError, type AxiosProgressEvent } from 'axios';
 
 const API_BASE_URL = process.env['NEXT_PUBLIC_API_URL'] || 'http://localhost:8080';
 
@@ -28,35 +28,32 @@ export class ApiClient {
 
     // Request interceptor to add auth token
     this.axiosInstance.interceptors.request.use(
-      (config: any) => {
+      (config: InternalAxiosRequestConfig) => {
         const token = this.getAuthToken();
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;
         }
         return config;
       },
-      (error: any) => Promise.reject(error)
+      (error: AxiosError) => Promise.reject(error)
     );
 
     // Response interceptor to handle errors
     this.axiosInstance.interceptors.response.use(
-      (response: any) => response,
-      (error: any) => {
+      (response) => response,
+      (error: AxiosError) => {
         if (error.response) {
           // Server responded with error status
           const { status, data } = error.response;
-          throw new ApiError(
-            data?.message || `HTTP ${status}`,
-            status,
-            data?.code
-          );
-        } else if (error.request) {
+          const errorData = data as { message?: string; code?: string };
+          throw new ApiError(errorData?.message || `HTTP ${status}`, status, errorData?.code);
+        }
+        if (error.request) {
           // Request was made but no response received
           throw new ApiError('Network error', 0);
-        } else {
-          // Something else happened
-          throw new ApiError(error.message, 0);
         }
+        // Something else happened
+        throw new ApiError(error.message, 0);
       }
     );
   }
@@ -130,17 +127,22 @@ export class ApiClient {
   async uploadFile<T>(
     endpoint: string,
     file: File,
-    onUploadProgress?: (progressEvent: any) => void
+    onUploadProgress?: (progressEvent: AxiosProgressEvent) => void
   ): Promise<T> {
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await this.axiosInstance.post<T>(endpoint, formData, {
+    const config: AxiosRequestConfig = {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
-      onUploadProgress,
-    });
+    };
+
+    if (onUploadProgress) {
+      config.onUploadProgress = onUploadProgress;
+    }
+
+    const response = await this.axiosInstance.post<T>(endpoint, formData, config);
     return response.data;
   }
 
