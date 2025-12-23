@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,7 +54,7 @@ public class ProjectService {
         logger.info("Creating new project '{}' for user {}", request.name(), ownerId);
         
         User owner = userRepository.findById(ownerId)
-            .orElseThrow(() -> new ResourceNotFoundException("User not found: " + ownerId));
+            .orElseThrow(() -> new ResourceNotFoundException("User", ownerId.toString()));
         
         // Validate project name uniqueness for user
         List<Project> existingProjects = projectRepository.findByOwnerAndArchivedFalseOrderByUpdatedAtDesc(owner);
@@ -61,7 +62,8 @@ public class ProjectService {
             .anyMatch(p -> p.getName().equalsIgnoreCase(request.name()));
         
         if (nameExists) {
-            throw new BusinessException("Project with name '" + request.name() + "' already exists");
+            throw new BusinessException("Project with name '" + request.name() + "' already exists", 
+                                      HttpStatus.CONFLICT, "PROJECT_NAME_EXISTS");
         }
         
         Project project = new Project(request.name(), request.description(), owner, request.isPrivate());
@@ -100,7 +102,7 @@ public class ProjectService {
         }
         
         if (!request.hasUpdates()) {
-            throw new BusinessException("No updates provided");
+            throw new BusinessException("No updates provided", HttpStatus.BAD_REQUEST, "NO_UPDATES");
         }
         
         // Apply updates
@@ -186,21 +188,24 @@ public class ProjectService {
         
         // Find user to invite
         User invitee = userRepository.findByEmail(request.email())
-            .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + request.email()));
+            .orElseThrow(() -> new ResourceNotFoundException("User", request.email()));
         
         // Check if user is already a member
         Optional<ProjectMember> existingMember = projectMemberRepository.findByProjectAndUser(project, invitee);
         if (existingMember.isPresent()) {
             if (existingMember.get().isPendingInvitation()) {
-                throw new BusinessException("User already has a pending invitation to this project");
+                throw new BusinessException("User already has a pending invitation to this project", 
+                                          HttpStatus.CONFLICT, "INVITATION_EXISTS");
             } else {
-                throw new BusinessException("User is already a member of this project");
+                throw new BusinessException("User is already a member of this project", 
+                                          HttpStatus.CONFLICT, "ALREADY_MEMBER");
             }
         }
         
         // Validate role assignment
         if (request.role() == ProjectRole.OWNER) {
-            throw new BusinessException("Cannot invite user as owner. Transfer ownership instead.");
+            throw new BusinessException("Cannot invite user as owner. Transfer ownership instead.", 
+                                      HttpStatus.BAD_REQUEST, "INVALID_ROLE");
         }
         
         // Create invitation
@@ -225,10 +230,11 @@ public class ProjectService {
         Project project = getProjectById(projectId);
         
         ProjectMember invitation = projectMemberRepository.findByProjectAndUser(project, user)
-            .orElseThrow(() -> new ResourceNotFoundException("No invitation found for this project"));
+            .orElseThrow(() -> new ResourceNotFoundException("ProjectInvitation", projectId.toString()));
         
         if (!invitation.isPendingInvitation()) {
-            throw new BusinessException("Invitation has already been accepted");
+            throw new BusinessException("Invitation has already been accepted", 
+                                      HttpStatus.CONFLICT, "INVITATION_ACCEPTED");
         }
         
         invitation.acceptInvitation();
@@ -273,15 +279,17 @@ public class ProjectService {
         
         User member = getUserById(memberId);
         ProjectMember projectMember = projectMemberRepository.findByProjectAndUser(project, member)
-            .orElseThrow(() -> new ResourceNotFoundException("Member not found in project"));
+            .orElseThrow(() -> new ResourceNotFoundException("ProjectMember", memberId.toString()));
         
         // Validate role change
         if (request.role() == ProjectRole.OWNER) {
-            throw new BusinessException("Cannot assign owner role. Use transfer ownership instead.");
+            throw new BusinessException("Cannot assign owner role. Use transfer ownership instead.", 
+                                      HttpStatus.BAD_REQUEST, "INVALID_ROLE");
         }
         
         if (project.isOwner(member)) {
-            throw new BusinessException("Cannot change role of project owner");
+            throw new BusinessException("Cannot change role of project owner", 
+                                      HttpStatus.FORBIDDEN, "OWNER_ROLE_IMMUTABLE");
         }
         
         projectMember.setRole(request.role());
@@ -314,11 +322,12 @@ public class ProjectService {
         
         // Cannot remove project owner
         if (project.isOwner(member)) {
-            throw new BusinessException("Cannot remove project owner. Transfer ownership first.");
+            throw new BusinessException("Cannot remove project owner. Transfer ownership first.", 
+                                      HttpStatus.FORBIDDEN, "CANNOT_REMOVE_OWNER");
         }
         
         ProjectMember projectMember = projectMemberRepository.findByProjectAndUser(project, member)
-            .orElseThrow(() -> new ResourceNotFoundException("Member not found in project"));
+            .orElseThrow(() -> new ResourceNotFoundException("ProjectMember", memberId.toString()));
         
         projectMemberRepository.delete(projectMember);
         
@@ -356,12 +365,12 @@ public class ProjectService {
     
     private User getUserById(UUID userId) {
         return userRepository.findById(userId)
-            .orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));
+            .orElseThrow(() -> new ResourceNotFoundException("User", userId.toString()));
     }
     
     private Project getProjectById(UUID projectId) {
         return projectRepository.findById(projectId)
-            .orElseThrow(() -> new ResourceNotFoundException("Project not found: " + projectId));
+            .orElseThrow(() -> new ResourceNotFoundException("Project", projectId.toString()));
     }
     
     private Project getProjectWithAccessCheck(UUID projectId, User user) {
