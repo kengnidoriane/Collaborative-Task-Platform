@@ -1,8 +1,8 @@
 'use client';
 
-import React from 'react';
 import type { AuthResponse, User } from '@collaborative-task-platform/shared-types';
 import { useRouter } from 'next/navigation';
+import type React from 'react';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { apiClient } from '../api/client';
 
@@ -22,7 +22,7 @@ interface AuthContextType extends AuthState {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const _API_BASE_URL = process.env['NEXT_PUBLIC_API_URL'] || 'http://localhost:8080';
+const _API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<AuthState>({

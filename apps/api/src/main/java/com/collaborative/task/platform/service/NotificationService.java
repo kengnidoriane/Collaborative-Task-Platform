@@ -2,10 +2,13 @@ package com.collaborative.task.platform.service;
 
 import com.collaborative.task.platform.entity.Project;
 import com.collaborative.task.platform.entity.ProjectRole;
+import com.collaborative.task.platform.entity.TaskStatus;
 import com.collaborative.task.platform.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 /**
  * Service for handling notifications and email communications.
@@ -82,5 +85,62 @@ public class NotificationService {
         // - Send email notification about removal
         // - Revoke access tokens and sessions for this project
         // - Remove project from user's accessible projects list
+    }
+    
+    // Task-related notification methods
+    
+    /**
+     * Notify user when a task is assigned to them.
+     */
+    public void sendTaskAssignedNotification(UUID assigneeId, UUID taskId, String taskTitle, String projectName) {
+        logger.info("Notifying user {} of task assignment: {} in project {}", 
+                   assigneeId, taskTitle, projectName);
+        
+        // TODO: Implement actual notification logic
+        // - Send email notification about task assignment
+        // - Send WebSocket notification if user is online
+        // - Create in-app notification
+        // - Send push notification if mobile app is available
+    }
+    
+    /**
+     * Notify project members when a new task is created.
+     */
+    public void sendTaskCreatedNotification(UUID projectId, UUID taskId, String taskTitle, String createdByName) {
+        logger.info("Notifying project {} members of new task: {} created by {}", 
+                   projectId, taskTitle, createdByName);
+        
+        // TODO: Implement actual notification logic
+        // - Send WebSocket notification to all connected project members
+        // - Update project activity feed
+        // - Send email digest notifications (if enabled)
+    }
+    
+    /**
+     * Notify relevant users when a task status changes.
+     */
+    public void sendTaskStatusChangedNotification(UUID projectId, UUID taskId, String taskTitle, 
+                                                 TaskStatus oldStatus, TaskStatus newStatus) {
+        logger.info("Notifying project {} members of task status change: {} from {} to {}", 
+                   projectId, taskTitle, oldStatus, newStatus);
+        
+        // TODO: Implement actual notification logic
+        // - Send WebSocket notification to project members
+        // - Notify task assignee and creator
+        // - Update project analytics in real-time
+        // - Trigger workflow automations if configured
+    }
+    
+    /**
+     * Notify project members when a task is deleted.
+     */
+    public void sendTaskDeletedNotification(UUID projectId, String taskTitle, String deletedByName) {
+        logger.info("Notifying project {} members of task deletion: {} deleted by {}", 
+                   projectId, taskTitle, deletedByName);
+        
+        // TODO: Implement actual notification logic
+        // - Send WebSocket notification to project members
+        // - Update project activity feed
+        // - Clean up any related notifications
     }
 }

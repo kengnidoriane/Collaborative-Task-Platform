@@ -31,14 +31,23 @@ export interface Project {
   name: string;
   description?: string;
   ownerId: string;
+  ownerName: string;
+  ownerEmail: string;
   isPrivate: boolean;
+  archived: boolean;
+  memberCount: number;
+  userRole?: 'OWNER' | 'ADMIN' | 'MEMBER';
   createdAt: Date;
   updatedAt: Date;
 }
 
 export interface ProjectMember {
+  id: string;
   projectId: string;
   userId: string;
+  userEmail: string;
+  userFullName: string;
+  userAvatarUrl?: string;
   role: 'OWNER' | 'ADMIN' | 'MEMBER';
   joinedAt: Date;
 }
@@ -47,7 +56,21 @@ export interface CreateProjectDto {
   name: string;
   description?: string;
   isPrivate?: boolean;
-  teamMembers?: string[];
+}
+
+export interface UpdateProjectDto {
+  name?: string;
+  description?: string;
+  isPrivate?: boolean;
+}
+
+export interface InviteMemberDto {
+  email: string;
+  role?: 'ADMIN' | 'MEMBER';
+}
+
+export interface UpdateMemberRoleDto {
+  role: 'ADMIN' | 'MEMBER';
 }
 
 // Task types

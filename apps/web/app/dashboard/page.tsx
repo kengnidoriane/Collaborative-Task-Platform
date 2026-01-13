@@ -13,6 +13,7 @@ import { useEffect } from 'react';
 import { LogoutButton } from '../../components/auth/logout-button';
 import { UserProfile } from '../../components/auth/user-profile';
 import { UserAvatar } from '../../components/auth/user-profile';
+import { ProjectDashboard } from '../../components/projects/project-dashboard';
 import { useAuth } from '../../lib/auth/auth-context';
 
 export default function DashboardPage() {
@@ -69,63 +70,7 @@ function DashboardContent() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Welcome Card */}
-          <div className="lg:col-span-2">
-            <Card>
-              <CardHeader>
-                <CardTitle>Welcome to Your Dashboard</CardTitle>
-                <CardDescription>
-                  You have successfully authenticated and can now access protected content.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="p-4 bg-green-50 border border-green-200 rounded-md">
-                    <h3 className="text-sm font-medium text-green-800">
-                      Authentication Successful
-                    </h3>
-                    <p className="text-sm text-green-700 mt-1">
-                      Your session is active and secure. You can now access all platform features.
-                    </p>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="p-4 border rounded-md">
-                      <h4 className="font-medium text-gray-900">Projects</h4>
-                      <p className="text-sm text-gray-600 mt-1">
-                        Create and manage your collaborative projects
-                      </p>
-                    </div>
-                    <div className="p-4 border rounded-md">
-                      <h4 className="font-medium text-gray-900">Tasks</h4>
-                      <p className="text-sm text-gray-600 mt-1">
-                        Track and organize your team's work
-                      </p>
-                    </div>
-                    <div className="p-4 border rounded-md">
-                      <h4 className="font-medium text-gray-900">Real-time Collaboration</h4>
-                      <p className="text-sm text-gray-600 mt-1">
-                        Work together with instant updates
-                      </p>
-                    </div>
-                    <div className="p-4 border rounded-md">
-                      <h4 className="font-medium text-gray-900">Analytics</h4>
-                      <p className="text-sm text-gray-600 mt-1">
-                        Monitor team performance and progress
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* User Profile */}
-          <div>
-            <UserProfile />
-          </div>
-        </div>
+        <ProjectDashboard />
       </main>
     </div>
   );

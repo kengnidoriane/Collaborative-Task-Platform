@@ -1,7 +1,22 @@
-import type { AuthResponse, User } from '@collaborative-task-platform/shared-types';
-import axios, { type AxiosInstance, type AxiosRequestConfig, type InternalAxiosRequestConfig, type AxiosError, type AxiosProgressEvent } from 'axios';
+import type {
+  AuthResponse,
+  CreateProjectDto,
+  InviteMemberDto,
+  Project,
+  ProjectMember,
+  UpdateMemberRoleDto,
+  UpdateProjectDto,
+  User,
+} from '@collaborative-task-platform/shared-types';
+import axios, {
+  type AxiosInstance,
+  type AxiosRequestConfig,
+  type InternalAxiosRequestConfig,
+  type AxiosError,
+  type AxiosProgressEvent,
+} from 'axios';
 
-const API_BASE_URL = process.env['NEXT_PUBLIC_API_URL'] || 'http://localhost:8080';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
 
 export class ApiError extends Error {
   constructor(
@@ -95,6 +110,69 @@ export class ApiClient {
 
   async logout(): Promise<void> {
     await this.axiosInstance.post('/api/v1/auth/logout');
+  }
+
+  // Project endpoints
+  async getProjects(): Promise<Project[]> {
+    const response = await this.axiosInstance.get<Project[]>('/api/v1/projects');
+    return response.data;
+  }
+
+  async getProject(projectId: string): Promise<Project> {
+    const response = await this.axiosInstance.get<Project>(`/api/v1/projects/${projectId}`);
+    return response.data;
+  }
+
+  async createProject(data: CreateProjectDto): Promise<Project> {
+    const response = await this.axiosInstance.post<Project>('/api/v1/projects', data);
+    return response.data;
+  }
+
+  async updateProject(projectId: string, data: UpdateProjectDto): Promise<Project> {
+    const response = await this.axiosInstance.put<Project>(`/api/v1/projects/${projectId}`, data);
+    return response.data;
+  }
+
+  async deleteProject(projectId: string): Promise<void> {
+    await this.axiosInstance.delete(`/api/v1/projects/${projectId}`);
+  }
+
+  async searchProjects(query: string): Promise<Project[]> {
+    const response = await this.axiosInstance.get<Project[]>(
+      `/api/v1/projects/search?q=${encodeURIComponent(query)}`
+    );
+    return response.data;
+  }
+
+  async getProjectMembers(projectId: string): Promise<ProjectMember[]> {
+    const response = await this.axiosInstance.get<ProjectMember[]>(
+      `/api/v1/projects/${projectId}/members`
+    );
+    return response.data;
+  }
+
+  async inviteMember(projectId: string, data: InviteMemberDto): Promise<ProjectMember> {
+    const response = await this.axiosInstance.post<ProjectMember>(
+      `/api/v1/projects/${projectId}/members`,
+      data
+    );
+    return response.data;
+  }
+
+  async updateMemberRole(
+    projectId: string,
+    memberId: string,
+    data: UpdateMemberRoleDto
+  ): Promise<ProjectMember> {
+    const response = await this.axiosInstance.put<ProjectMember>(
+      `/api/v1/projects/${projectId}/members/${memberId}`,
+      data
+    );
+    return response.data;
+  }
+
+  async removeMember(projectId: string, memberId: string): Promise<void> {
+    await this.axiosInstance.delete(`/api/v1/projects/${projectId}/members/${memberId}`);
   }
 
   // Generic CRUD methods

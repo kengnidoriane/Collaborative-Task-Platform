@@ -1,8 +1,8 @@
 'use client';
 
-import React from 'react';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import type React from 'react';
 import { useEffect } from 'react';
 import { useAuth } from '../../lib/auth/auth-context';
 
